@@ -209,11 +209,12 @@ Demonien asentamisen jälkeen portit 22 ja 80 olivat avoinna. Nmap kykeni myös 
 <img width="1036" height="203" alt="image" src="https://github.com/user-attachments/assets/1cad7c1a-f4c3-49d0-be18-7f9c650fd660" />
 
 
-# Lähteet
+## Lähteet
 
-- [Herrasmieshakkerit: Valokuvien vainukoira, vieraana Teemu M. Nieminen](herrasmieshakkerit.fi)
+- [Herrasmieshakkerit: Valokuvien vainukoira, vieraana Teemu M. Nieminen](https://herrasmieshakkerit.fi)
 - Hutchins et al. 2011: [Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary Campaigns and Intrusion Kill Chains](https://lockheedmartin.com/content/dam/lockheed-martin/rms/documents/cyber/LM-White-Paper-Intel-Driven-Defense.pdf)
 - Santos et al. The Art of Hacking (Video Collection) 2019: [Active reconnaisance](https://learning.oreilly.com/videos/the-art-of/9780135767849/9780135767849-SPTT_04_00/)
 - [KKO 2003:36](https://finlex.fi/fi/oikeus/kko/kko/2003/20030036)
 - [Nmap Reference Guide](https://nmap.org/book/man.html)
 - [Kali Linux Documentation](https://www.kali.org/docs/)
+- Karvinen, T. 2026. [Tunkeutumistestaus](https://terokarvinen.com/tunkeutumistestaus/)
