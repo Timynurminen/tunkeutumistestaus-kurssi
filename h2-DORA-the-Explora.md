@@ -113,3 +113,31 @@ ping -c 4 192.168.56.102
 ```
 
 <img width="520" height="196" alt="image" src="https://github.com/user-attachments/assets/2d546e04-35b7-4b3b-95cd-47c8e31e03bd" />
+
+## c) Virtuaaliverkko
+
+Kalista otin internetin pois komennolla:
+
+```bash
+sudo nmcli device disconnect eth0
+```
+
+Jonka jälkeen:
+
+<img width="324" height="73" alt="image" src="https://github.com/user-attachments/assets/3200eeb2-df09-411e-b51b-a82a530e25ac" />
+
+Metasploitable taas on otettu pois internetistä VirtualBox:n avulla jo valmiiksi.
+
+<img width="412" height="34" alt="image" src="https://github.com/user-attachments/assets/f984017d-0118-44bd-b617-2af4154f467a" />
+
+
+Yhteys testattu Kalilta Metasploitableen:
+
+<img width="530" height="191" alt="image" src="https://github.com/user-attachments/assets/0211a665-6e6e-4118-9539-a71053a99409" />
+
+Sekä toisinpäin:
+
+<img width="576" height="178" alt="image" src="https://github.com/user-attachments/assets/7569a69a-448b-492f-8139-51348a7d3f28" />
+
+## d) Porttiskannaus Metasploitable
+
