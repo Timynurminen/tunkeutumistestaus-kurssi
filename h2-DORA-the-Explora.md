@@ -139,5 +139,65 @@ Sekä toisinpäin:
 
 <img width="576" height="178" alt="image" src="https://github.com/user-attachments/assets/7569a69a-448b-492f-8139-51348a7d3f28" />
 
-## d) Porttiskannaus Metasploitable
+## d) Etsi Metasploitable
 
+Etsin Metasploitablen:
+
+<img width="924" height="285" alt="image" src="https://github.com/user-attachments/assets/394d62e8-527c-4d55-8474-f214ac55fc0e" />
+
+Jonka jälkeen tarkistin weppipalvelimen.
+
+<img width="611" height="494" alt="image" src="https://github.com/user-attachments/assets/a5af8ade-d466-4047-8df7-e0f3d1e78335" />
+
+## e) Skannaa Metasploitable
+
+Suoritin skannauksen komennolla:
+
+```bash
+sudo nmap -A -T4 -p- 192.168.56.102
+```
+
+#### Kolme mielenkiintoista porttia:
+
+##### FTP - portti 21
+
+<img width="448" height="227" alt="image" src="https://github.com/user-attachments/assets/c25778d1-8f83-469d-84de-4d7b9fcefd66" />
+
+- Portissa 21 oli avoinna FTP-palvelu, jonka Nmap tunnist vsftpd 2.3.4 -palvelimeksi.
+- Skripti havaitsi palvelimen sallivan anonyymin FTP-kirjautumisen.
+- Palveluun pääsyä ei välttämättä ole rajattu tavalliseen käyttäjätunnukseen ja liikenteen sisältä ei suojata salauksella
+
+##### Samba - portit 139 ja 445
+
+<img width="610" height="39" alt="image" src="https://github.com/user-attachments/assets/f30ab7e5-a6a2-457e-89a6-7f152a3830a0" />
+
+<img width="796" height="272" alt="image" src="https://github.com/user-attachments/assets/e66caf98-16ef-4f92-a46e-2d566ac305c1" />
+
+Nmap löysi Samba-palvelun TCP-porteista 139 ja 445. Nmap sai SMB-palvelusta myös lisätietoja, kuten tietokoneen nimen *metasploitable*, domainin *localdomain* ja FQDN-nimen *metasploitable.localadmin*
+
+*smb-security-mode*-tarkistus ilmoitti, että *message_signing* oli poistettu käytöstä. Nmapin dokumentaation mukaan SMB message signingilla voidaan varmistaa viestien eheyttä, ja jos allerkijoitusta ei vaadita, yhteys voi olla altis.
+
+Samba-palvelusta saatiin siis pelkän avoimen portin lisäksi tietoa järjestelmän nimestä, tms.
+
+##### MySQL - portti 3306
+
+<img width="939" height="164" alt="image" src="https://github.com/user-attachments/assets/06d72866-6a82-449b-b182-28f60d7dbb2e" />
+
+- Portissa 3306 oli avoinna MySQL-tietokantapalvelu.
+- Nmap suoritti palvelulle myös *mysql-info*-tarkistuksen, joka palautti esimerkiksi käytetyn protokollaversion, palvelimen version, tuettuja ominaisuuksia sekä palvelimen tilan.
+- Tuloksesta voidaan päätellä, että MySQL-palvelu hyväksyy verkkoyhteyksiä Metasploitable-koneella.
+- Lisäksi palvelusta voidaan saada tietoa jo ennen varsinaista autentikointia.
+
+
+## Lähteet
+
+- [Buuri 2026: DORA and TLPT testing](https://terokarvinen.com/buuri-2026-dora-and-threat-lead-penetration-testing/buuri-2026-dora-and-threat-lead-penetration-testing--teros-pentest-course.pdf)
+- [Eur-Lex 2022: DORA: Articles 26 and 27](https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng)
+- [Suomen pankki 2025: TIBER-FI procedures and Guidelines](https://www.suomenpankki.fi/globalassets/bof/en/money-and-payments/the-bank-of-finland-as-catalyst-payments-council/tiber-fi/tiber-fi-2.0-procedures-and-guidelines.pdf)
+- [Nmap: Reference Guide](https://nmap.org/book/man.html)
+- [Nmap: Port Scanning Basics](https://nmap.org/book/man-port-scanning-basics.html)
+- [Nmap: Service and Version Detection](https://nmap.org/book/man-version-detection.html)
+- [Nmap: OS detection](https://nmap.org/book/man-os-detection.html)
+- [Nmap: ftp-anon](https://nmap.org/nsedoc/scripts/ftp-anon.html)
+- [Nmap: smb-security-mode](https://nmap.org/nsedoc/scripts/smb-security-mode.html)
+- [Nmap: mysql-info](https://nmap.org/nsedoc/scripts/mysql-info.html)
