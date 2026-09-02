@@ -197,7 +197,6 @@ Samba-palvelusta saatiin siis pelkän avoimen portin lisäksi tietoa järjestelm
 - [Nmap: Reference Guide](https://nmap.org/book/man.html)
 - [Nmap: Port Scanning Basics](https://nmap.org/book/man-port-scanning-basics.html)
 - [Nmap: Service and Version Detection](https://nmap.org/book/man-version-detection.html)
-- [Nmap: OS detection](https://nmap.org/book/man-os-detection.html)
 - [Nmap: ftp-anon](https://nmap.org/nsedoc/scripts/ftp-anon.html)
 - [Nmap: smb-security-mode](https://nmap.org/nsedoc/scripts/smb-security-mode.html)
 - [Nmap: mysql-info](https://nmap.org/nsedoc/scripts/mysql-info.html)
