@@ -38,7 +38,7 @@
 - Red team -vaiheessa RTT suunnittelee ja toteuttaa valittuihin uhkaskenaarioihin perustuvan testin.
 - Vaiheessa tehdään ensin **Red Team Test Plan**, jonka hyväksymisen jälkeen alkaa aktiivinen testaus.
 - Testauksessa voidaan käyttää vaiheita kuten reconnaissance, weaponisation, delivery, exploitation, control and movement sekä actions on target.
-- Jos Red Team ei muuten pääse etenemään, sillve voidaan antaa esimerkiksi pääsy sisäverkkoon eli leg-up, jotta testissä voidaan jatkaa seuraavaan tavoitteeseen.
+- Jos Red Team ei muuten pääse etenemään, sille voidaan antaa esimerkiksi pääsy sisäverkkoon eli leg-up, jotta testissä voidaan jatkaa seuraavaan tavoitteeseen.
 
 **Oma huomio:** Leg-up oli mielenkiintoinen, mutta tarpeellinen testien suorittamisen kannalta. Olisi harmillista jäädä kiinni heti ensi kättelyssä.
 
@@ -163,9 +163,9 @@ sudo nmap -A -T4 -p- 192.168.56.102
 
 <img width="448" height="227" alt="image" src="https://github.com/user-attachments/assets/c25778d1-8f83-469d-84de-4d7b9fcefd66" />
 
-- Portissa 21 oli avoinna FTP-palvelu, jonka Nmap tunnist vsftpd 2.3.4 -palvelimeksi.
+- Portissa 21 oli avoinna FTP-palvelu, jonka Nmap tunnisti vsftpd 2.3.4 -palvelimeksi.
 - Skripti havaitsi palvelimen sallivan anonyymin FTP-kirjautumisen.
-- Palveluun pääsyä ei välttämättä ole rajattu tavalliseen käyttäjätunnukseen ja liikenteen sisältä ei suojata salauksella
+- Palveluun pääsyä ei välttämättä ole rajattu tavalliseen käyttäjätunnukseen ja liikenteen sisältöä ei suojata salauksella
 
 ##### Samba - portit 139 ja 445
 
@@ -173,11 +173,11 @@ sudo nmap -A -T4 -p- 192.168.56.102
 
 <img width="796" height="272" alt="image" src="https://github.com/user-attachments/assets/e66caf98-16ef-4f92-a46e-2d566ac305c1" />
 
-Nmap löysi Samba-palvelun TCP-porteista 139 ja 445. Nmap sai SMB-palvelusta myös lisätietoja, kuten tietokoneen nimen *metasploitable*, domainin *localdomain* ja FQDN-nimen *metasploitable.localadmin*
+Nmap löysi Samba-palvelun TCP-porteista 139 ja 445. Nmap sai SMB-palvelusta myös lisätietoja, kuten tietokoneen nimen *metasploitable*, domainin *localdomain* ja FQDN-nimen *metasploitable.localdomain*
 
-*smb-security-mode*-tarkistus ilmoitti, että *message_signing* oli poistettu käytöstä. Nmapin dokumentaation mukaan SMB message signingilla voidaan varmistaa viestien eheyttä, ja jos allerkijoitusta ei vaadita, yhteys voi olla altis.
+*smb-security-mode*-tarkistus ilmoitti, että *message_signing* oli poistettu käytöstä. Nmapin dokumentaation mukaan SMB message signingilla voidaan varmistaa viestien eheyttä, ja jos allekirjoitusta ei vaadita, yhteys voi olla altis man-in-the-middle-hyökkäyksille.
 
-Samba-palvelusta saatiin siis pelkän avoimen portin lisäksi tietoa järjestelmän nimestä, tms.
+Samba-palvelusta saatiin siis pelkän avoimen portin lisäksi tietoa järjestelmän nimestä, toimialueesta sekä SMB-palvelun turvallisuusasetuksista.
 
 ##### MySQL - portti 3306
 
