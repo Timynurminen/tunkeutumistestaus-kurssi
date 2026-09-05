@@ -204,7 +204,8 @@ Tulosteessa komennolla: *ifconfig* pääsemme näkemään IP-osoitteet(ipv4,ipv6
 
 Kerätyt tiedot ovat hyödyllisiä jatkohyökkäyksissä:
 
-- Root‑taso antaa täyden hallinnan järjestelmään — hyökkääjä voi asentaa ohjelmia, muuttaa asetuksia tai luoda uusia käyttäjiä.
+- Root‑taso antaa täyden hallinnan järjestelmään
+- Hyökkääjä voi asentaa ohjelmia, muuttaa asetuksia tai luoda uusia käyttäjiä.
 - Verkkotiedot paljastavat kohdekoneen IP‑osoitteen ja verkon rakenteen, mikä auttaa laajentamaan hyökkäystä muihin koneisiin samassa verkossa.
 - Järjestelmätiedot (OS, arkkitehtuuri) auttavat valitsemaan oikeat exploitit ja payloadit myöhempää käyttöä varten.
 
