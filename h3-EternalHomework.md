@@ -19,7 +19,7 @@
 -  -sn-skannausta kutsutaan usein ping scaniksi tai ping sweepiksi, ja sitä voidaan käyttää esimerkiksi aktiivisten koneiden määrän selvittämiseen
 
 Lähde: [Nmap Reference Guide - Host Discovery](https://nmap.org/book/man-host-discovery.html)
-Nmapin dokumentaatio on luotetta lähde, koska se on Nmap-projektin virallinen dokumentaatio osoitteessa nmap.org ja kuvaa suoraan ohjelman omien komentojen toimintaa.'
+Nmapin dokumentaatio on luotettava lähde, koska se on Nmap-projektin virallinen dokumentaatio osoitteessa nmap.org ja kuvaa suoraan ohjelman omien komentojen toimintaa.
 
 ## b) Tallenna porttiskannauksen tuloksia Metasploitin tietokantoihin
 
@@ -60,11 +60,11 @@ db_nmap -sV 192.168.56.102
 ## c) Tallennettujen tuloksien tarkastelu
 
 
-Hostit:
+Hostit: Komento näyttää Metasploitin tietokantaan tallentuneet kohteet. Jokaisesta hostista näkyy mm. IP-osoite, MAC-osoite, käyttöjärjestelmä ja tarkoitus esim. server
 
 <img width="749" height="119" alt="image" src="https://github.com/user-attachments/assets/6d91713c-ce18-4790-a2ed-e928737d9139" />
 
-Palvelut:
+Palvelut: Komento näyttää kaikki tietokantaan tallentuneet palvelut ja niiden portit
 
 <img width="910" height="478" alt="image" src="https://github.com/user-attachments/assets/86627335-e912-4d8f-94d5-6fc743bf4d9c" />
 
@@ -76,18 +76,24 @@ Tutkin komentoja ja kokeilin:
 
 ## d) Internet Famous
 
-Etsin netistä erilaisia kuuluisia exploitteja liittyen Metasploittiin
+Etsin ja muistelin tunnilla läpi käytyä haavoittuvuutta vsftpd
 
-Törmäsin sellaiseen kuin post/linux/gather/hashdump
+```bash
+search vsftpd
+```
 
-<img width="932" height="199" alt="image" src="https://github.com/user-attachments/assets/3f5a2eac-275d-44e0-ae56-f3294ce1c57a" />
+<img width="935" height="225" alt="image" src="https://github.com/user-attachments/assets/3168ab6f-7d45-43f1-af93-32e4eeb38558" />
 
-- Hashien dumppaaminen on yksi tunnetuimmista post-exploitation-tekniikoista
-- Ollut esillä monissa tietoturvakonferensseissa
-- Tekniikka on klassinen osa Metasploitin työkalupakkia ja mainitaan lähes kaikissa Metasploit-oppaissa
-- Ollut julkisuudessa jo vuosia, koska se liittyy käyttäjätunnus ja salasana säilöntä järjestelmiin.
+**Miksi tämä on "Internet famous"**
+- Vuonna 2011 vsftpd 2.3.4 -versioon lisättiin tahallinen backdoor.
+- Backdoor aktivoituu, kun käyttäjnimi sisältää ":)", jolloin palvelin avaa shellin porttiin 6200.
+- Tapaus sai paljon julkisuutta, koska vsftpd oli laajasti käytetty FTP-palvelin.
+- Haavoittuvuus oli mukana virallisessa lähdekoodijakelussa, mikä teki siitä erityisen vakavan ja näkyvän.
 
-Moduuli toimii Linux-järjestelmissä, joihin on saatu shell tai meterprete-sessio. Sen avulla voidaan kerätä järjestelmän käyttäjien hash-tietoja jatkoanalyyisä varten.
+*Metasploitable 2 sisältää juuri tämän haavoittuvan version, joka näkyy skannauksessa portissa 21/tcp*
+
+<img width="507" height="119" alt="image" src="https://github.com/user-attachments/assets/64d20d2b-b51e-434c-b678-280a68ff9201" />
+
 
 ## e) vertaile nmap:n omaa tiedostoon tallennusta
 
