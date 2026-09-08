@@ -7,7 +7,7 @@
 - Metasploit sisältää exploit-, payload-, auxiliary- ja Meterpreter-toimintoja, joita voidaan käyttää penetraatiotestauksen eri vaiheissa.
 - Metasploitin etuja ovat avoin lähdekoodi, suurten verkkojen tehokas testaaminen sekä mahdollisuus tallentaa löydetyt järjestelmät, palvelut ja haavoittuvuudet tietokantaan.
 - Esimerkkitestissä kohdetta tutkitaan ensin Nmapilla, jonka jälkeen tunnistetaan palveluita ja mahdollisia haavoittuvuuksia ja varmistetaan niitä metasploitin moduuleilla.
-- Haavoittuvuuden hyödyntämisen jälkeen luvussa esitellään post-exploitation-vaihettam kuten verkon ja Active Directory -ympäristön tutkimista sekä pivotointia muihin järjestelmiin.
+- Haavoittuvuuden hyödyntämisen jälkeen luvussa esitellään post-exploitation-vaihetta kuten verkon ja Active Directory -ympäristön tutkimista sekä pivotointia muihin järjestelmiin.
 - Luvun pääidea on näyttää penetraatiotestin eteneminen tiedustelusta haavoittuvuuksien löytämiseen, hyödyntämiseen ja jatkotoimiin Metasploitin avulla.
 
 ### Mitä nmap -sn tekee?
@@ -227,7 +227,7 @@ Sieltä löysin:
 <img width="358" height="28" alt="image" src="https://github.com/user-attachments/assets/77912dd2-5bf4-4b37-9c15-855a93747d6f" />
 
 Jonka jälkeen komennot olivat samat kuin ftp:n murtamisessa.
-*Lisäyksenä laitoin: set RPORT 139, koska samba oli kahdessa eri portissa (139, 445) ja scripti toimii vain vanhemmassa versiossa eli 139 portissa.
+*Asetin kohdeportiksi 139 komennolla **set RPORT 139**, koska skannauksessa Samba näkyi tässä portissa ja se on käyttämäni **usermap_scripti**-moduulin oletusportti.*
 
 <img width="924" height="782" alt="image" src="https://github.com/user-attachments/assets/a75729c5-d50d-46b5-84a6-4c1893811c95" />
 
@@ -346,20 +346,19 @@ grep -r "root" /pivot
 
 Kuvan alareunassa näemme rootin salasanan hash muodossa.
 
-## i) Attaack!
+## l) Attaack!
 
-Harjoituksessa käyin useita MITRE ATT&CK-viitekehyksen taktiikoita ja tekniikoita, jotka kuvaa hyökkäyksen etenemistä vaiheittain.
+Harjoituksessa käytin useita MITRE ATT&CK-viitekehyksen taktiikoita ja tekniikoita, jotka kuvaa hyökkäyksen etenemistä vaiheittain.
 
-- **Reconnaissance:** *Active Scanning:* nmap-skannaus, db_nmap tallennus, palveluiden kartoitus
-- **Initial Access:** *Exploit Public-Facing Application:* vsftpd 2.3.4 backdoorin hyödyntäminen
-- **Execution:** *Command and Scripting Interpreter:* meterpreter-komennot kuten "sysinfo", "getuid".
-- **Privilige Escalation:** *Exploitation for Privilige Excalation:* root-tason pääsy haavoittuvuuden kautta.
-- **Discovery:** *System Information Discovery:* Järjestelmän tunnistus
-- **Credential Access:** *OS Credential Dumping:* salasanahashien hakeminen "/etc/shadow"-tiedostosta.
-- **Lateral Movement:** *Remote Services:* tunnistettujen palveluiden (SSH, Samba, MySQL) hyödyntäminen mahdolliseen levittäytymiseen.
-- **Collection:** *Data from Local System:* hashien ja järjestelmätietojen kerääminen lokitiedostoon.
-- **Exfiltration:** *Exfiltration Over C2 Channel:* tietojen siirto hyökkääjän koneelle meterpreter-sessionin kautta.
-- **Impact:** *Data Manipulation:* kohteen tiedostojen lukeminen ja muokkaus root-oikeuksilla.
+- **Reconnaissance**: Active Scanning (T1595): Kohteen porttien ja palveluversioiden selvittäminen Nmapilla ennen murtautumista.
+- **Initial Access:** Exploit Public-Facing Application (T1190): Pääsyn saaminen kohteeseen vsftpd takaoven ja Samban haavoittuvuuden kautta. 
+- **Execution:** Unix Shell (T1059.004): Komentojen id ja ls -la suorittaminen Samban kautta avautuneessa komentotulkissa.
+- **Discovery:** System Information Discovery (T1082): Käyttöjärjestelmän, arkkitehtuurin ja koneen nimen selvittäminen sysinfo-komennolla.
+- **Discovery:** System Owner/User Discovery (T1033): Istunnon käyttäjän ja root-oikeuksien tarkistaminen getuid- ja id-komennoilla.
+- **Discovery:** System Network Configuration Discovery (T1016): Verkkoliitäntöjen ja osoitteiden tutkiminen ifconfig-komennolla.
+- **Discovery:** Process Discovery (T1057): Käynnissä olevien prosessien tarkastelu ps-komennolla.
+- **Discovery:** File and Directory Discovery (T1083): Tiedostojen ja hakemistojen listaaminen ls-komennolla.
+- **Credential Access:** OS Credential Dumping: /etc/shadow (T1003.008): Salasanatiivisteiden lukeminen /etc/shadow-tiedostosta.
 
 ### Lähteet
 - [Jaswal 2020: *Mastering Metasploit - Fourth Edition*, Chapter 1: Approaching a Penetration Test Using Metasploit](https://www.oreilly.com/library/view/mastering-metasploit/9781838980078/B15076_01_Final_ASB_ePub.xhtml#_idParaDest-31)
