@@ -309,6 +309,7 @@ getuid
 cat /etc/shadow
 exit
 exit
+exit
 ```
 
 Viimeinen *exit* lopettaa script-työkalun ja tallentaa lokitiedoston
