@@ -364,4 +364,4 @@ Harjoituksessa käyin useita MITRE ATT&CK-viitekehyksen taktiikoita ja tekniikoi
 - [Jaswal 2020: *Mastering Metasploit - Fourth Edition*, Chapter 1: Approaching a Penetration Test Using Metasploit](https://www.oreilly.com/library/view/mastering-metasploit/9781838980078/B15076_01_Final_ASB_ePub.xhtml#_idParaDest-31)
 - [Metasploit Framework Documentation](https://docs.metasploit.com/)
 - [Nmap: Reference Guide](https://nmap.org/book/man.html)
-- [MITTRE ATT&CK Framework](
+- [MITTRE ATT&CK Framework](https://attack.mitre.org/)
