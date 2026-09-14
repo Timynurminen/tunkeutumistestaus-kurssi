@@ -23,4 +23,31 @@
 - Tyypillinen esimerkki: URL-parametrin muuttaminen, kuten *customer_number=132355* -> hyökkäjä vaihtaa arvon ja näkee muiden asiakkaiden tiedot.
 - IDOR voi esiintyä myös tiedostojen suorissa viittauksissa, kuten *static/12144.txt*, jolloin hyökkääjä voi lukea muiden käyttäjien tallenteita.
 - Ydinongelma on se, että sovellus luottaa liikaa käyttäjän syötteeseen eikä tarkista, onko käyttäjällä oikeus kyseiseen resurssiin.
-- Suojatuminen edellyttää **server-puolen autorisointia
+
+**Oma huomio:** IDOR on pelottavan yksinkertainen, joskus hyökkääjän ei tarvitse tehdä mitään teknisesti vaikeaa, vaan pelkkä URL-parametrin muuttaminen riittää.
+
+#### Path Traversal
+
+- Path traversal tarkoittaa haavoittuvuutta, jossa hyökkääjä voi lukea tai joskus kirjoittaa mihin tahansa tiedostoon palvelimella manipuloimalla tiedostopolkuja.
+- Tyypillinen hyökkäys: URL-parametrin muuttaminen, esim. *filename=../../../etc/passwd*, jolloin sovellus lukee järjestelmän tiedostoja kuvatiedoston sijaan.
+- Haavoittuvuus syntyy, kun sovellus liittää käyttäjän syötteen suoraan tiedostopolkuun ilman tarkistuksia.
+- Mahdollistaa pääsyn sovelluksen lähdekoodiin, salasanoihin, konfiguraatioihin ja käyttöjärjestelmän tiedostoihin.
+- Yleisiä kiertotapoja: URL-enkoodaus, netsed traversal, null byte -bypass tai absolute path -viittaukset
+
+**Oma huomio:** Path traversal on klassinen esimerkki siitä, miten pieni kehityksen huolimattomuus voi avata kok palvelimen. (pelkästään *../* voi riittää murtoon)
+
+#### Cross-Site Scripting (XSS)
+
+- XSS mahdollistaa haitallisen JavaScriptin suorittamisen uhrin selaimessa, jolloin hyökkääjä voi esiintyä uhrina ja käyttää sovellusta hänen oikeuksillaan.
+- XSS syntyy, kun käyttäjän syöte palautetaan HTML-vastaukseen ilman turvallista käsittelyä.
+- Kolme päätyyppiä: Reflected, Stored, DOM-based.
+- Hyökkääjä voi varastaa istuntoja, lukea dataa, suorittaa toimintoja, muokata sivua tai lisätä haitallista toiminnallisuutta.
+- Suojautuminen
+- - Syötteen suodatus (whitelist).
+  - Output-enkoodaus (HTML, JS, URL, CSS).
+  - Oikeat HTTP-otsakkeet (*Content-Type*, *X-Content-Type-Options*):
+  - Content Security Policy viimeisenä puolustuslinjana.
+- XSS on yksi yleisimmistä web-haavoittuvuuksista, vaikka todellisia hyökkäyksiä nähdään harvemmin.
+- XSS kohdistuu käyttäjiin, kun taas SQL-injektio kohdistuu palvelimen tietokantaan.
+
+**Oma huomio:** XSS on vaarallinen juuri siksi, että se syntyy helposti. Yksi väärin käsitelty syöte voi avata hyökkääjälle koko sovelluksen käyttäjän oikeuksilla.
