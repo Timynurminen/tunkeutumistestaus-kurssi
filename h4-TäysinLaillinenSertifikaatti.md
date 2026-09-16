@@ -85,21 +85,23 @@ CA-sertifikaatin luottamus: Firefox -> Settigs -> Privacy & Security -> Certific
 
 <img width="780" height="306" alt="image" src="https://github.com/user-attachments/assets/fd85632d-e36b-4b3a-a248-02b33567f544" />
 
-
-<img width="1440" height="478" alt="image" src="https://github.com/user-attachments/assets/6f923db0-9aad-4500-ad06-be21a6608bc1" />
-
 ### ZAP proxyksi selaimeen
 
 Asetin ZAP:n selaimen proxyksi FoxyProxylla. Osoitteeksi asetin `127.0.0.1` ja portiksi `8080` (ZAP:n oletusportti).
+
+<img width="1440" height="478" alt="image" src="https://github.com/user-attachments/assets/6f923db0-9aad-4500-ad06-be21a6608bc1" />
+
+### Kuvien sieppaus
+ZAP ei oletuksena käsittele kuvapyyntöjä historiassa.
 
 ZAP-proxystä kuvat näkyviin. 
 
 <img width="746" height="575" alt="image" src="https://github.com/user-attachments/assets/fe31bf6f-09fe-4c9b-99f8-bd222798c970" />
 
-Toimiiko se:
+### Todistus:
 
 <img width="1915" height="841" alt="image" src="https://github.com/user-attachments/assets/d5d78a40-b000-483e-93b7-bfa12689edd1" />
 
 <img width="1916" height="871" alt="image" src="https://github.com/user-attachments/assets/f56ce9f8-1981-4008-ac14-c78d7b4acd99" />
 
-Toimiihan se.
+Avasin selaimella wikipedia.org:n proxyn ollessa päällä.
