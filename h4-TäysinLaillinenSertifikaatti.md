@@ -53,7 +53,7 @@
 **Oma huomio:** XSS on vaarallinen juuri siksi, että se syntyy helposti. Yksi väärin käsitelty syöte voi avata hyökkääjälle koko sovelluksen käyttäjän oikeuksilla.
 
 
-## a) Kettumaista
+## a) Totally Legit Sertificate
 
 
 ### Ensimmäisenä päivitettiin kali ja asennettiin ZAP-proxy.
@@ -68,9 +68,30 @@ zaproxy
 
 Sertfikaatin luonti löytyy Tools -> Options -> Network -> Server Certificates
 
+<img width="772" height="582" alt="image" src="https://github.com/user-attachments/assets/1c81bbeb-3961-4d1d-a76f-d04604d8190f" />
+
+Sertin tallennus:
+
+<img width="683" height="367" alt="image" src="https://github.com/user-attachments/assets/e4b4bd78-e934-4d20-92b5-405c04825e12" />
+
+CA-sertifikaatin luottamus: Firefox -> Settigs -> Privacy & Security -> Certificates -> View Certificates -> Authorities -> Import -> etsi tallennettu .cer tiedosto.
+
+<img width="670" height="476" alt="image" src="https://github.com/user-attachments/assets/f93a7ff8-c476-43ca-8666-b68dd810e923" />
 
 
+<img width="780" height="306" alt="image" src="https://github.com/user-attachments/assets/fd85632d-e36b-4b3a-a248-02b33567f544" />
 
 
+<img width="1440" height="478" alt="image" src="https://github.com/user-attachments/assets/6f923db0-9aad-4500-ad06-be21a6608bc1" />
 
+ZAP-proxystä kuvat näkyviin. 
 
+<img width="746" height="575" alt="image" src="https://github.com/user-attachments/assets/fe31bf6f-09fe-4c9b-99f8-bd222798c970" />
+
+Toimiiko se:
+
+<img width="1915" height="841" alt="image" src="https://github.com/user-attachments/assets/d5d78a40-b000-483e-93b7-bfa12689edd1" />
+
+<img width="1916" height="871" alt="image" src="https://github.com/user-attachments/assets/f56ce9f8-1981-4008-ac14-c78d7b4acd99" />
+
+Toimiihan se.
