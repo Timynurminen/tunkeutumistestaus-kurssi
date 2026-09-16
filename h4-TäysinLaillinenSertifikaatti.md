@@ -112,5 +112,8 @@ Avasin selaimella wikipedia.org:n proxyn ollessa päällä.
 
 <img width="841" height="498" alt="image" src="https://github.com/user-attachments/assets/7485abc0-48ad-4dd3-8e07-d043ba8e4d02" />
 
-### ZAP proxyksi FoxyProxyyn
+### ZAP proxyksi FoxyProxyyn sekä patterneja lisätty
+
+
+<img width="967" height="452" alt="Screenshot 2026-09-16 110247" src="https://github.com/user-attachments/assets/f4da23bb-0742-43c8-9d24-6a50b4b2e195" />
 
