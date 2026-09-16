@@ -106,6 +106,10 @@ ZAP-proxystä kuvat näkyviin.
 
 Avasin selaimella wikipedia.org:n proxyn ollessa päällä.
 
+#### Lähteet
+
+Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
+
 ## b) Kettumaista.
 
 ### Asennetaan FoxyProxy Standard
