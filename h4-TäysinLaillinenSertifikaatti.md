@@ -66,15 +66,19 @@ Tämän jälkeen käynnistettiin se komennolla:
 zaproxy
 ```
 
+### CA-sertifikaatin generointi
+
 Sertfikaatin luonti löytyy Tools -> Options -> Network -> Server Certificates
 
 <img width="772" height="582" alt="image" src="https://github.com/user-attachments/assets/1c81bbeb-3961-4d1d-a76f-d04604d8190f" />
 
-Sertin tallennus:
+Generoin uuden CA-sertifikaatin ja tellensin sen `.cer` -tiedostoksi levylle.
 
 <img width="683" height="367" alt="image" src="https://github.com/user-attachments/assets/e4b4bd78-e934-4d20-92b5-405c04825e12" />
 
-CA-sertifikaatin luottamus: Firefox -> Settigs -> Privacy & Security -> Certificates -> View Certificates -> Authorities -> Import -> etsi tallennettu .cer tiedosto.
+### CA-sertifikaatin tuonti selaimeen
+
+CA-sertifikaatin luottamus: Firefox -> Settigs -> Privacy & Security -> Certificates -> View Certificates -> Authorities -> Import -> etsi tallennettu `.cer` tiedosto.
 
 <img width="670" height="476" alt="image" src="https://github.com/user-attachments/assets/f93a7ff8-c476-43ca-8666-b68dd810e923" />
 
@@ -83,6 +87,10 @@ CA-sertifikaatin luottamus: Firefox -> Settigs -> Privacy & Security -> Certific
 
 
 <img width="1440" height="478" alt="image" src="https://github.com/user-attachments/assets/6f923db0-9aad-4500-ad06-be21a6608bc1" />
+
+### ZAP proxyksi selaimeen
+
+Asetin ZAP:n selaimen proxyksi FoxyProxylla. Osoitteeksi asetin `127.0.0.1` ja portiksi `8080` (ZAP:n oletusportti).
 
 ZAP-proxystä kuvat näkyviin. 
 
