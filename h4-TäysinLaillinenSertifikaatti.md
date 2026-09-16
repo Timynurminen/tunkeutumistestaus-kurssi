@@ -105,3 +105,12 @@ ZAP-proxystä kuvat näkyviin.
 <img width="1916" height="871" alt="image" src="https://github.com/user-attachments/assets/f56ce9f8-1981-4008-ac14-c78d7b4acd99" />
 
 Avasin selaimella wikipedia.org:n proxyn ollessa päällä.
+
+## b) Kettumaista.
+
+### Asennetaan FoxyProxy Standard
+
+<img width="841" height="498" alt="image" src="https://github.com/user-attachments/assets/7485abc0-48ad-4dd3-8e07-d043ba8e4d02" />
+
+### ZAP proxyksi FoxyProxyyn
+
