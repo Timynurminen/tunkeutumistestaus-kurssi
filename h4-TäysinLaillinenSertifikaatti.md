@@ -51,3 +51,26 @@
 - XSS kohdistuu käyttäjiin, kun taas SQL-injektio kohdistuu palvelimen tietokantaan.
 
 **Oma huomio:** XSS on vaarallinen juuri siksi, että se syntyy helposti. Yksi väärin käsitelty syöte voi avata hyökkääjälle koko sovelluksen käyttäjän oikeuksilla.
+
+
+## a) Kettumaista
+
+
+### Ensimmäisenä päivitettiin kali ja asennettiin ZAP-proxy.
+
+<img width="757" height="583" alt="image" src="https://github.com/user-attachments/assets/4b92c159-e219-47a2-b158-468c504d1927" />
+
+Tämän jälkeen käynnistettiin se komennolla:
+
+```bash
+zaproxy
+```
+
+Sertfikaatin luonti löytyy Tools -> Options -> Network -> Server Certificates
+
+
+
+
+
+
+
