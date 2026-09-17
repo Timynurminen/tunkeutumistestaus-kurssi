@@ -112,22 +112,99 @@ Avasin selaimella wikipedia.org:n proxyn ollessa päällä.
 - [OWASP ZAP - Official Documentation](https://www.zaproxy.org/docs/)
 - [FoxyProxy Standard - Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)
 
+*Tehty 11.09.2026*
+
 ## b) Kettumaista.
 *Täydennetty 17.9.2026*
 
 ### Asennetaan FoxyProxy Standard
 
+Asensin FoxyProxy Standardin -laajennuksen Firefox Add-ons kaupasta.
+
 <img width="841" height="498" alt="image" src="https://github.com/user-attachments/assets/7485abc0-48ad-4dd3-8e07-d043ba8e4d02" />
 
-### ZAP proxyksi FoxyProxyyn sekä patterneja lisätty
+### ZAP proxyksi FoxyProxyyn sekä patterns
 
+Käytin samaa ZAP-profiilia kuin a-kohdassa. Lisäsin profiiliin "Proxy by Patterns" -osioon seuraavat include-patternit, jotta vain valitsemani sivustot ohjautuisivat ZAP:n kautta:
 
-<img width="967" height="452" alt="Screenshot 2026-09-16 110247" src="https://github.com/user-attachments/assets/f4da23bb-0742-43c8-9d24-6a50b4b2e195" />
 
 <img width="989" height="506" alt="image" src="https://github.com/user-attachments/assets/396cccbc-6505-46b0-819f-54b9a07c089b" />
 
-<img width="1848" height="539" alt="image" src="https://github.com/user-attachments/assets/0be96945-fd6f-44be-8f64-b622a7417333" />
+**Huomio:** Huomasin, että kaikki tuli aluksi läpi ZAP:n työkaluun, ennen kuin huomasin, "proxy by patterns" -kohdan.
+
+<img width="299" height="348" alt="image" src="https://github.com/user-attachments/assets/ffd3b92c-a1e9-4ac8-91e0-a1550613cbd3" />
+
+### Todistus: vain patternit ohjautuvat ZAP:iin
+
 
 <img width="639" height="179" alt="image" src="https://github.com/user-attachments/assets/4878a6c5-c6fc-4914-8dfe-738448cc2077" />
 
 <img width="937" height="133" alt="image" src="https://github.com/user-attachments/assets/fce2af3a-4208-455c-8abb-79ce8cd24d68" />
+
+<img width="1848" height="539" alt="image" src="https://github.com/user-attachments/assets/0be96945-fd6f-44be-8f64-b622a7417333" />
+
+Tämä osoittaa että wikipedia.org sivusto ei näy ZAP:ssa ja siellä näkyy vain labra alusta *web-security-academy.net*
+
+### Lähteet
+
+- Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
+- [OWASP ZAP - Official Documentation](https://www.zaproxy.org/docs/)
+- [FoxyProxy Standard - Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)
+- [Portswigger Web Security Academy](https://portswigger.net/web-security)
+
+## Cross Site Scripting (XSS)
+
+### c) Reflected XSS into HTML context with nothing encoded
+
+#### Haavoittuvuuden löytäminen
+
+Sivulla oli hakukenttä "Search the blog...", jonka syöte heijastui takaisin sivulle otsikkoon muodossa "X search results for '[hakusana]'".
+
+<img width="854" height="289" alt="image" src="https://github.com/user-attachments/assets/31db5c73-f1b7-4435-9029-b112b4ce7ae0" />
+
+Testasin ensin sanalla `test` ja tarkistin sivun lähdekoodista (Ctrl + U), että hakusana päätyi suoraan `<h1>` -elementin sisään ilman minkäänlaista HTML-enkoodausta:
+
+<img width="343" height="74" alt="image" src="https://github.com/user-attachments/assets/bd0835fe-3b02-4d4b-9fc6-769fb2972271" />
+
+Koska syöte päätyy suoraan tekstisisältöön sen pystyy korvaamaan suoraan omalla HTML:llä ilman, että tarvitsee ensin katkaista mitään lainausmerkkiä tai attribuuttia.
+
+#### Hyökkäys
+
+Syötin hakukenttään labran ohjeiden mukaan `alert`-funktion 
+```bash
+<script>alert(1)</script>
+```
+Selain suoritti scriptin ja avasi alert-ikkunan:
+
+<img width="551" height="190" alt="image" src="https://github.com/user-attachments/assets/acef2656-1989-44db-9e0d-19f3b68a7e9e" />
+
+#### Mitä palvelimella tapahtuu
+
+ZAP:n Historystä nähdään, että pyynnössä hakusana lähetetään URL-enkoodattuna:
+
+`GET /?search=%3Cscript%3Ealert%281%29%3C%2Fscript%3E`
+
+Palvelin purkaa enkoodauksen ja lisää hakusanan suoraan sivun HTML:ään, ilman että se suodattaa tai enkoodaa sitä uudelleen:
+
+`<h1>0 search results for '<script>alert(1)</script>'</h1>`
+
+Kun selain saa tämän vastauksen, se tulkitsee `<script>`-tagin osaksi sivua eikä pelkkänä tekstinä, ja suorittaa sisällä olevan koodin.
+
+<img width="624" height="188" alt="image" src="https://github.com/user-attachments/assets/c83bcdf9-6131-4be3-900b-abd2b503b040" />
+
+<img width="611" height="377" alt="image" src="https://github.com/user-attachments/assets/37d6eee6-b8ed-4bb0-9514-0b11d5792833" />
+
+#### Mistä vika johtuu
+
+Vika johtuu siitä, ettei sovellus enkoodaa käyttäjän syötettä ennen kuin se lisätään HTML-vastaukseen (esim. `<` pitäisi muuttaa muotoon `&lt;`). Koska kyseessä on reflected XSS, haavoittuvuus ei tallennu palvelimelle pysyvästi, vaan se laukeaa vain kun joku itse lähettää pyynnön, jossa payload on mukana, esim. klikkaamalla hyökkääjän lähettämää haitallista linkkiä
+
+<img width="323" height="57" alt="image" src="https://github.com/user-attachments/assets/049fb48a-d361-42c6-9979-de0988db4bf8" />
+
+
+#### Lähteet:
+
+- [OWASP XSS Preventation Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
+- [Portswigger Web Security Academy - Reflected XSS](https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded)
+
+
+### d) 
