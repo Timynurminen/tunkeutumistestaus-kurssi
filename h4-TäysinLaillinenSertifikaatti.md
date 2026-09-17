@@ -108,9 +108,12 @@ Avasin selaimella wikipedia.org:n proxyn ollessa päällä.
 
 #### Lähteet
 
-Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
+- Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
+- [OWASP ZAP - Official Documentation](https://www.zaproxy.org/docs/)
+- [FoxyProxy Standard - Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)
 
 ## b) Kettumaista.
+*Täydennetty 17.9.2026*
 
 ### Asennetaan FoxyProxy Standard
 
@@ -121,3 +124,10 @@ Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
 
 <img width="967" height="452" alt="Screenshot 2026-09-16 110247" src="https://github.com/user-attachments/assets/f4da23bb-0742-43c8-9d24-6a50b4b2e195" />
 
+<img width="989" height="506" alt="image" src="https://github.com/user-attachments/assets/396cccbc-6505-46b0-819f-54b9a07c089b" />
+
+<img width="1848" height="539" alt="image" src="https://github.com/user-attachments/assets/0be96945-fd6f-44be-8f64-b622a7417333" />
+
+<img width="639" height="179" alt="image" src="https://github.com/user-attachments/assets/4878a6c5-c6fc-4914-8dfe-738448cc2077" />
+
+<img width="937" height="133" alt="image" src="https://github.com/user-attachments/assets/fce2af3a-4208-455c-8abb-79ce8cd24d68" />
