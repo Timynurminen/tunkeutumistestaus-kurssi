@@ -23,7 +23,7 @@
 - John käy oletuksena ensin läpi yksinkertaisia sääntöjä, sitten oman sanakirjatiedostonsa (`password.lst`), ja tulostaa löytyneen salasanan suoraan komentorivin, minkä lisäksi `--show`-parametrilla voi näyttää kaikki jo murretut salasanat uudelleen.
 - Sanakirjahyökkäys ei toimi hyvin generoituja, satunnaisia salasanoja vastaan (esim. `pwgen`-työkalulla luotuja). Tämä korostaa hyvien salasanojen ja salasananhallintaohjelmien käytön tärkeyttä.
 
-**Oma huomio:** Mielenkiintoista on se, että lähes minkä tahansa tunnetun tiedostomuodon salaus voidaan murtaa samalla periaattella (poimi hash -> aja sanakirjahyökkäys) kunhan oikea "2john"-skripti löytyy.
+**Oma huomio:** Mielenkiintoista on se, että lähes minkä tahansa tunnetun tiedostomuodon salaus voidaan murtaa samalla periaatteella (poimi hash -> aja sanakirjahyökkäys) kunhan oikea "2john"-skripti löytyy.
 
 ## a) Asenna Hashcat ja testaa sen toiminta murtamalla esimerkkisalasana
 *Seurasin Karvisen artikkelin ohjeita (ks. x-kohdan tiivistelmä).*
@@ -98,7 +98,7 @@ Asensin kääntämiseen tarvittavat paketit:
 sudo apt-get update
 sudo apt-get -y install micro bash-completion git build-essential libssl-dev zlib1g zlib1g-dev libbz2-1.0 libbz2-dev atool zip wget
 ```
-**Huom:** Alkuperäisen artikkelin pakettilistassa mainittu `zlib.gst` ei löytynyt nykyisestä Kali-repositoriasta. Jätin paketin pois listalta.
+**Huom:** Alkuperäisen artikkelin pakettilistassa mainittu `zlib.gst` ei löytynyt nykyisestä Kali-repositoriosta. Jätin paketin pois listalta.
 <img width="931" height="122" alt="image" src="https://github.com/user-attachments/assets/b213be89-2204-4577-985d-bd3db3242f82" />
 
 
@@ -154,7 +154,7 @@ John löysi sanakirjahyökkäyksellä salasanan muutamassa sekunnissa **butterfl
 
 Vahvistin tuloksen: `./john --show tero.zip.hash`
 
-Purin ZIP:n löydetelly salasanalla ja tarkistin sisällön:
+Purin ZIP:n löydetyllä salasanalla ja tarkistin sisällön:
 
 ```bash
 unzip tero.zip
@@ -215,11 +215,11 @@ Lähteet:
 - [Karvinen 2023: Crack File Password With John](https://terokarvinen.com/2023/crack-file-password-with-john/)
 
 
-## f) Tiiviste. Tee itse tai etsi verkosta jokin salakirjoitettu tiedosto, jonka saat auki. Murra sen salaus.
+## f) Tiiviste. 
 
 ### Ensimmäinen yritys: yescrypt (/etc/shadow)
 
-Loin uuden käyttäjän järjestelmään ja tarkistin hänen tiivisteen /etc/shadow-tiedostosta.
+Loin uuden käyttäjän järjestelmään ja tarkistin hänen tiivisteensä /etc/shadow-tiedostosta.
 
 ```bash
 sudo adduser testi
@@ -268,7 +268,7 @@ Lähteet:
 
 ## g) Sanakirja
 
-Oman sanakirjan teko parantaa murron onnistumismahdollisuuksia erityisesti silloin, kun salasana perustuu johonkin ennustettavaan malliin, jota yleisest sanakirjat kuten RockYou eivät kata.
+Oman sanakirjan teko parantaa murron onnistumismahdollisuuksia erityisesti silloin, kun salasana perustuu johonkin ennustettavaan malliin, jota yleiset sanakirjat kuten RockYou eivät kata.
 
 ### Oman sanakirjan luonti
 
