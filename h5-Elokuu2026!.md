@@ -1,6 +1,6 @@
 # h5 Elokuu2026!
 
-## x) Lue/Kkatso ja tiivistä
+## x) Lue/Katso ja tiivistä
 
 ### Karvinen 2022: Cracking Passwords with Hashcat
 
@@ -359,8 +359,14 @@ Tulos: **kissa1** löytyi. Hashcat kokeili sanaa "kissa" sekä sellaisenaan ett�
 lähteet:
 - Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
 
+
+
 ## Lähteet:
+
 - [Karvinen 2022: Cracking Passwords with Hashcat](https://terokarvinen.com/2022/cracking-passwords-with-hashcat/)
 - [Karvinen 2023: Crack File Password With John](https://terokarvinen.com/2023/crack-file-password-with-john/)
 - [pocl-opencl-icd: Debian Package](https://packages.debian.org/bookworm/pocl-opencl-icd)
 - [hashcat Forum](https://hashcat.net/forum/archive/index.php?thread-10695.html=)
+- [Openwall: John the Ripper documentation](https://www.openwall.com/john/doc/)
+- [OpenSSL Manual: openssl-passwd Password Hash Generator](https://docs.openssl.org/master/man1/openssl-passwd/)
+- [Vinkit: terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
