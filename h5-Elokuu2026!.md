@@ -232,7 +232,7 @@ Tiiviste alkoi `$y$`, mikä tarkoittaa yescrypt-algoritmia. Yritin murtaa tämä
 
 ### Toinen yritys: SHA-512 crypt (onnistui)
 
-Loin sen sijaan oman SHA-512 crypt -tiivisteen opensslilla, jolloin sain valita algoritmin itse eikä tarvinnut luottaa järjestelmän oletusarvoon:
+Loin sen sijaan oman SHA-512 crypt -tiivisteen opensslilla, jolloin sain valita algoritmin itse eikä tarvinnut luottaa järjestelmän oletusarvoon. Tämä ei vaadi oikeaa linux käyttäjää, joten vapaavalintaisena tunnisteena toimii "testikayttaja".
 
 ```bash
 openssl passwd -6 -salt "testi" kissa123
