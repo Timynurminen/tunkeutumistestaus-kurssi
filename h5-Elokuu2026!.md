@@ -356,7 +356,7 @@ Kokeilin sitten samaa hashia rules-parametrin kanssa:
 
 Tulos: **kissa1** löytyi. Hashcat kokeili sanaa "kissa" sekä sellaisenaan että kaikilla best66.rule-tiedoston sisältämillä muunnoksilla, ja yksi näistä muunnoksista tuotti oikean salasanan.
 
-lähteet:
+Lähteet:
 - Vinkit: [terokarvinen.com](https://terokarvinen.com/tunkeutumistestaus/)
 
 
