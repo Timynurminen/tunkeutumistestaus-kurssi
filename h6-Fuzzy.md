@@ -167,4 +167,122 @@ Löysin samat kaksi osumaa kuin artikkelissa luvattiin: `class` ja `development.
 
 - [Karvinen 2023: Fuffme - Install Web Fuzzing Target on Debian](https://terokarvinen.com/2023/fuffme-web-fuzzing-target-debian/)
 
-## c) 
+## c) Basic Content Discovery
+
+<img width="814" height="236" alt="image" src="https://github.com/user-attachments/assets/ed483a09-938f-48b6-8c7c-87636bf952ba" />
+
+
+Ajoin FuffMen ensimmäisen harjoituksen:
+
+`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/basic/FUZZ`
+
+Sama komento tuli jo ajettua b)-kohdan testifuzzauksessa. Tulos oli sama: löysin tiedostot `class` ja `development.log`, kuten tehtävänanto lupasi.
+
+<img width="766" height="432" alt="image" src="https://github.com/user-attachments/assets/b4a12f25-a4d0-4521-bc66-1c88b9ba238b" />
+
+## d) Content Discovery With Recursion
+
+<img width="827" height="247" alt="image" src="https://github.com/user-attachments/assets/98040cc1-fcac-45b9-849f-7b0d976c9052" />
+
+
+Ajoin FuffMen rekursiivisen harjoituksen:
+
+`ffuf -w ~/wordlists/common.txt -recursion -u http://localhost/cd/recursion/FUZZ`
+
+`-recursion`-lippu sai ffufin jatkamaan automaattisesti löydettyihin alihakemistoihin. Ffuf löysi ensin hakemiston `/admin`, käynnisti sille uuden fuzzausjonon, löysi sieltä  `/admin/users`, käynnisti senkin sisään uuden jonon, ja löysi lopulta tiedoston `/admin/users/96`. Kaikki kolme askelta näkyvät tulosteessa. Tulos täsmää tehtävänannon kanssa.
+
+<img width="757" height="585" alt="image" src="https://github.com/user-attachments/assets/c4adb53f-bd0e-45be-82a4-74e9c941e60d" />
+
+## e) Content Discovery With File Extensions
+
+<img width="814" height="304" alt="image" src="https://github.com/user-attachments/assets/332e3e77-3163-4ab9-a414-7c5768e545a1" />
+
+
+Ajoin FuffMen harjoituksen, jossa hakemiston `/logs` sisällä olevien tiedostojen oletetaan olevan `.log`-päätteisiä:
+
+`ffuf -w ~/wordlists/common.txt -e .log -u http://localhost/cd/ext/logs/FUZZ`
+
+`-e`-lippu lisää määritetyn päätteen jokaisen sanakirjan sanan perään. Ffuf kokeili yhteensä 9372 sanaa ja löysi tiedoston `users.log`, kuten tehtävänannossa luvattiin.
+
+<img width="743" height="426" alt="image" src="https://github.com/user-attachments/assets/125ddf81-4834-4585-b1f3-a9e048be4fb0" />
+
+
+## f) No 404 Status
+
+<img width="807" height="458" alt="image" src="https://github.com/user-attachments/assets/7d8daf2a-1400-4ac8-9fcc-0884aa5a0adc" />
+
+Ajoin ensin FuffMen harjoituksen ilman suodattimia: 
+
+`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/no404/FUZZ`
+
+Lähes jokainen pyyntö palautti statuksen 200 ja saman koon, 669 tavua. Palvelin ei siis anna oikeaa 404-virhettä olemattomille sivuille, vaan näyttää "Page Cannot Be Found" -sivun statuksella 200. Tämä tekisi tuloksista harhaanjohtavia, jos luottaisi pelkkään status-koodiin.
+
+<img width="755" height="680" alt="image" src="https://github.com/user-attachments/assets/0abce478-06e2-4836-8e88-58e39755df49" />
+
+Suodatin pois nämä vääränlaiset osumat niiden yhteisen koon perusteella:
+
+`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/no404/FUZZ -fs 669`
+
+Jäljelle jäi yksi oikea osuma: tiedosto `secret`, kuten tehtävänannossa luvattiin.
+
+<img width="749" height="435" alt="image" src="https://github.com/user-attachments/assets/44887314-2f1a-4691-9a63-c7bad5f0e519" />
+
+
+## g) Param Mining
+
+<img width="828" height="283" alt="image" src="https://github.com/user-attachments/assets/14c090e8-234c-47d0-a525-120d8b2d557b" />
+
+Ajoin FuffMen harjoituksen, jossa fuzzattiin puuttuvaa URL-parametria polun sijaan:
+
+`ffuf -w ~/wordlists/parameters.txt -u http://localhost/cd/param/data?FUZZ=1`
+
+Sivu `/cd/param/data` palautti ilman parametria statuksen 400 ("Required Parameter Missing"). Ffuf löysi puuttuvan parametrin nimen: `debug`, kuten tehtävänannossa luvattiin.
+
+<img width="748" height="410" alt="image" src="https://github.com/user-attachments/assets/722aaebd-83bc-4ee9-8f60-2a0d24829563" />
+
+## h) Rate Limited
+
+<img width="806" height="459" alt="image" src="https://github.com/user-attachments/assets/b423564c-0a7b-489c-b5c1-b52dae704f8d" />
+
+Ajoin ensin perusfuzzauksen rajoitettua hakemistoa vastaan:
+
+`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/rate/FUZZ -mc 200,429`
+
+Hakemisto on rajoitettu 50 pyyntöön sekunnissa. Koska Ffuf lähetti pyyntöjä nopeammin, lähes kaikki pyynnöt palauttivat statuksen 429 (liikaa pyyntöjä, tilapäisesti estetty).
+
+<img width="764" height="734" alt="image" src="https://github.com/user-attachments/assets/7c42d65f-556a-41b2-9ef2-3487862a6465" />
+
+Hidastin sitten ajoa säikeiden määrää ja viivettä säätämällä:
+
+`ffuf -w ~/wordlists/common.txt -t 5 -p 0.1 -u http://localhost/cd/rate/FUZZ -mc 200,429`
+
+`-t 5` rajoitti samanaikaisten säikeiden määrän viiteen, `-p 0.1` lisäsi 0,1 sekunnin viiveen jokaisen pyynnön jälkeen. Ffuf laski nopeudeksi 47 pyyntöä sekunnissa, mikä pysyi rajoituksen alla. 429-virheitä ei enää tullut, ja löysin tiedoston `oracle`, kuten tehtävänannossa luvattiin.
+
+<img width="744" height="436" alt="image" src="https://github.com/user-attachments/assets/dffc4efc-6baa-4870-b3d6-bd79bda4d59f" />
+
+## i) Subdomains - Virtual Host Enumeration
+
+<img width="807" height="422" alt="image" src="https://github.com/user-attachments/assets/99d44b67-2394-44cc-9ecd-e774a3771f20" />
+
+Ajoin ensimmäisen FuffMen virtuaalihosti-harjoituksen fuzzaten `Host`-otsaketta polun sijaan:
+
+`ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://localhost`
+
+Kaikki 1907 tulosta palauttivat saman koon, 1495 tavua, kuten tehtävänannossa sanottiin. Tämä tarkoittaa, että palvelin vastaa samalla tavalla riippumatta siitä, mikä aliverkkotunnus Host-otsakkeessa on. Pelkkä status-koodi ei siis erottele oikeita osumia.
+
+<img width="757" height="761" alt="image" src="https://github.com/user-attachments/assets/8025867c-aa74-4efa-a211-664bdb76485c" />
+
+Suodatin pois vääränlaiset osumat niiden yhteisen koon perusteella:
+
+`ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://localhost -fs 1495`
+
+Jäljelle jäi yksi osuma `redhat`, kuten tehtävänannossa luvattiin.
+
+<img width="754" height="452" alt="image" src="https://github.com/user-attachments/assets/77207019-fe80-424b-9046-194bcf28aba3" />
+
+## Lähteet
+
+- [Karvinen 2023: Find Hidden Web Directories - Fuzz URLs with ffuf](https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/)
+- [Hoikkala 2023: ffuf README.md](https://github.com/ffuf/ffuf/blob/master/README.md)
+- [Karvinen 2023: Fuffme - Install Web Fuzzing Target on Debian](https://terokarvinen.com/2023/fuffme-web-fuzzing-target-debian/)
+- [Langley: FFUF Me - Target Practice For FFUF (Github-repositorio)](https://github.com/BuildHackSecure/ffufme)
