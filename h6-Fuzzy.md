@@ -97,7 +97,7 @@ Ffuf kertoo vain vastauksen tunnusluvut, joten avasin löydökset selaimessa.
 
 <img width="561" height="259" alt="image" src="https://github.com/user-attachments/assets/3b31886c-05e7-46d2-8e94-9c2c768d0544" />
 
-**Versionhallintasivu**: `http://127.0.0.2:8000/.git/
+**Versionhallintasivu**: `http://127.0.0.2:8000/.git/`
 
 <img width="517" height="262" alt="image" src="https://github.com/user-attachments/assets/3e36ebd6-2ae2-4763-a81d-59681e8a5a55" />
 
