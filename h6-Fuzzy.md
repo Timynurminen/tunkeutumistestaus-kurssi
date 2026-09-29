@@ -174,7 +174,9 @@ Löysin samat kaksi osumaa kuin artikkelissa luvattiin: `class` ja `development.
 
 Ajoin FuffMen ensimmäisen harjoituksen:
 
-`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/basic/FUZZ`
+```bash
+ffuf -w ~/wordlists/common.txt -u http://localhost/cd/basic/FUZZ
+```
 
 Sama komento tuli jo ajettua b)-kohdan testifuzzauksessa. Tulos oli sama: löysin tiedostot `class` ja `development.log`, kuten tehtävänanto lupasi.
 
@@ -187,7 +189,9 @@ Sama komento tuli jo ajettua b)-kohdan testifuzzauksessa. Tulos oli sama: löysi
 
 Ajoin FuffMen rekursiivisen harjoituksen:
 
-`ffuf -w ~/wordlists/common.txt -recursion -u http://localhost/cd/recursion/FUZZ`
+```bash
+ffuf -w ~/wordlists/common.txt -recursion -u http://localhost/cd/recursion/FUZZ
+```
 
 `-recursion`-lippu sai ffufin jatkamaan automaattisesti löydettyihin alihakemistoihin. Ffuf löysi ensin hakemiston `/admin`, käynnisti sille uuden fuzzausjonon, löysi sieltä  `/admin/users`, käynnisti senkin sisään uuden jonon, ja löysi lopulta tiedoston `/admin/users/96`. Kaikki kolme askelta näkyvät tulosteessa. Tulos täsmää tehtävänannon kanssa.
 
@@ -200,7 +204,9 @@ Ajoin FuffMen rekursiivisen harjoituksen:
 
 Ajoin FuffMen harjoituksen, jossa hakemiston `/logs` sisällä olevien tiedostojen oletetaan olevan `.log`-päätteisiä:
 
-`ffuf -w ~/wordlists/common.txt -e .log -u http://localhost/cd/ext/logs/FUZZ`
+```bash
+ffuf -w ~/wordlists/common.txt -e .log -u http://localhost/cd/ext/logs/FUZZ
+```
 
 `-e`-lippu lisää määritetyn päätteen jokaisen sanakirjan sanan perään. Ffuf kokeili yhteensä 9372 sanaa ja löysi tiedoston `users.log`, kuten tehtävänannossa luvattiin.
 
@@ -213,7 +219,9 @@ Ajoin FuffMen harjoituksen, jossa hakemiston `/logs` sisällä olevien tiedostoj
 
 Ajoin ensin FuffMen harjoituksen ilman suodattimia: 
 
-`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/no404/FUZZ`
+```bash
+ffuf -w ~/wordlists/common.txt -u http://localhost/cd/no404/FUZZ
+```
 
 Lähes jokainen pyyntö palautti statuksen 200 ja saman koon, 669 tavua. Palvelin ei siis anna oikeaa 404-virhettä olemattomille sivuille, vaan näyttää "Page Cannot Be Found" -sivun statuksella 200. Tämä tekisi tuloksista harhaanjohtavia, jos luottaisi pelkkään status-koodiin.
 
@@ -221,7 +229,9 @@ Lähes jokainen pyyntö palautti statuksen 200 ja saman koon, 669 tavua. Palveli
 
 Suodatin pois nämä vääränlaiset osumat niiden yhteisen koon perusteella:
 
-`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/no404/FUZZ -fs 669`
+```bash
+ffuf -w ~/wordlists/common.txt -u http://localhost/cd/no404/FUZZ -fs 669
+```
 
 Jäljelle jäi yksi oikea osuma: tiedosto `secret`, kuten tehtävänannossa luvattiin.
 
@@ -234,7 +244,9 @@ Jäljelle jäi yksi oikea osuma: tiedosto `secret`, kuten tehtävänannossa luva
 
 Ajoin FuffMen harjoituksen, jossa fuzzattiin puuttuvaa URL-parametria polun sijaan:
 
-`ffuf -w ~/wordlists/parameters.txt -u http://localhost/cd/param/data?FUZZ=1`
+```bash
+ffuf -w ~/wordlists/parameters.txt -u http://localhost/cd/param/data?FUZZ=1
+```
 
 Sivu `/cd/param/data` palautti ilman parametria statuksen 400 ("Required Parameter Missing"). Ffuf löysi puuttuvan parametrin nimen: `debug`, kuten tehtävänannossa luvattiin.
 
@@ -246,7 +258,9 @@ Sivu `/cd/param/data` palautti ilman parametria statuksen 400 ("Required Paramet
 
 Ajoin ensin perusfuzzauksen rajoitettua hakemistoa vastaan:
 
-`ffuf -w ~/wordlists/common.txt -u http://localhost/cd/rate/FUZZ -mc 200,429`
+```bash
+ffuf -w ~/wordlists/common.txt -u http://localhost/cd/rate/FUZZ -mc 200,429
+```
 
 Hakemisto on rajoitettu 50 pyyntöön sekunnissa. Koska Ffuf lähetti pyyntöjä nopeammin, lähes kaikki pyynnöt palauttivat statuksen 429 (liikaa pyyntöjä, tilapäisesti estetty).
 
@@ -254,7 +268,9 @@ Hakemisto on rajoitettu 50 pyyntöön sekunnissa. Koska Ffuf lähetti pyyntöjä
 
 Hidastin sitten ajoa säikeiden määrää ja viivettä säätämällä:
 
-`ffuf -w ~/wordlists/common.txt -t 5 -p 0.1 -u http://localhost/cd/rate/FUZZ -mc 200,429`
+```bash
+ffuf -w ~/wordlists/common.txt -t 5 -p 0.1 -u http://localhost/cd/rate/FUZZ -mc 200,429
+```
 
 `-t 5` rajoitti samanaikaisten säikeiden määrän viiteen, `-p 0.1` lisäsi 0,1 sekunnin viiveen jokaisen pyynnön jälkeen. Ffuf laski nopeudeksi 47 pyyntöä sekunnissa, mikä pysyi rajoituksen alla. 429-virheitä ei enää tullut, ja löysin tiedoston `oracle`, kuten tehtävänannossa luvattiin.
 
@@ -266,7 +282,9 @@ Hidastin sitten ajoa säikeiden määrää ja viivettä säätämällä:
 
 Ajoin ensimmäisen FuffMen virtuaalihosti-harjoituksen fuzzaten `Host`-otsaketta polun sijaan:
 
-`ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://localhost`
+```bash
+ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://localhost
+```
 
 Kaikki 1907 tulosta palauttivat saman koon, 1495 tavua, kuten tehtävänannossa sanottiin. Tämä tarkoittaa, että palvelin vastaa samalla tavalla riippumatta siitä, mikä aliverkkotunnus Host-otsakkeessa on. Pelkkä status-koodi ei siis erottele oikeita osumia.
 
@@ -274,7 +292,9 @@ Kaikki 1907 tulosta palauttivat saman koon, 1495 tavua, kuten tehtävänannossa 
 
 Suodatin pois vääränlaiset osumat niiden yhteisen koon perusteella:
 
-`ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://localhost -fs 1495`
+```bash
+ffuf -w ~/wordlists/subdomains.txt -H "Host: FUZZ.ffuf.me" -u http://localhost -fs 1495
+```
 
 Jäljelle jäi yksi osuma `redhat`, kuten tehtävänannossa luvattiin.
 
